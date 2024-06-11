@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Link or Tag{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Delete Link or Tag</h1>
+
+    <!-- Form per cancellare il link -->
+    <form action="{{ url_for('link.delete_link') }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> <!-- Token CSRF -->
+        <div class="form-group">
+            <label for="link_id">Select Link to Delete:</label>
+            <select class="form-control" id="link_id" name="link_id">
+                {% for link in links %}
+                <option value="{{ link.id }}">{{ link.description }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-danger">Delete Link</button>
+        <button type="submit" name="cancel" value="true" class="btn btn-secondary">Cancel</button>
+    </form>
+
+    <!-- Form per cancellare il tag -->
+    <form action="{{ url_for('link.delete_tag') }}" method="post" class="mt-4">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> <!-- Token CSRF -->
+        <div class="form-group">
+            <label for="tag_id">Select Tag to Delete:</label>
+            <select class="form-control" id="tag_id" name="tag_id">
+                {% for tag in tags %}
+                <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-danger">Delete Tag</button>
+        <button type="submit" name="cancel" value="true" class="btn btn-secondary">Cancel</button>
+    </form>
+</div>
+{% endblock %}

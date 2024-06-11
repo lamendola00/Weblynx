@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Link Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Link Details</h1>
+    <form id="link-form" action="{{ url_for('link.detail_link', link_id=link.id) }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input type="text" class="form-control" id="url" name="url" value="{{ link.url }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="description" value="{{ link.description }}" required>
+        </div>
+        <div class="form-group">
+            <label for="tags">Current Tags</label>
+            <ul class="list-group" id="tag-list">
+                {% for tag in link.tags %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ tag.name }}
+                    <button type="button" class="btn btn-danger btn-sm remove-tag" data-link-id="{{ link.id }}" data-tag-id="{{ tag.id }}">Remove</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="form-group">
+            <label for="tags">Add Tag</label>
+            <div class="form-inline add-tag-form">
+                <select class="form-control mr-2" id="tags" name="tag_id">
+                    <option value="" disabled selected>Select a tag</option>
+                    {% for tag in tags %}
+                    {% if tag not in link.tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                    <option value="new">New Tag</option>
+                </select>
+                <button type="button" class="btn btn-primary" id="add-selected-tag">Add Selected Tag</button>
+            </div>
+        </div>
+        <div class="form-group" id="new-tag-group" style="display: none;">
+            <label for="new-tag">New Tag</label>
+            <input type="text" class="form-control" id="new-tag">
+            <button type="button" class="btn btn-primary mt-2" id="add-new-tag">Add Tag</button>
+        </div>
+        <div class="form-group">
+            <label for="image_original">Original Image</label>
+            {% if link.image_original %}
+            <div class="image-container">
+                <img src="data:image/jpeg;base64,{{ link.image_original }}" alt="Original Image" class="image">
+            </div>
+            {% else %}
+            <p>No original image available</p>
+            {% endif %}
+            <input type="file" class="form-control-file" id="image_original" name="image_original" accept="image/jpeg, image/png">
+        </div>
+        <div class="form-group">
+            <label>Created By:</label>
+            <p>{{ link.created_by_user.username }} on {{ link.created_at }}</p>
+        </div>
+        <div class="form-group">
+            <label>Modified By:</label>
+            {% if link.modified_by_user %}
+            <p>{{ link.modified_by_user.username }} on {{ link.modified_at }}</p>
+            {% else %}
+            <p>Not modified yet</p>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{{ url_for('link.delete_link', link_id=link.id) }}" class="btn btn-danger">Delete Link</a>
+        <a href="{{ url_for('link.show_all') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<div id="variable-container" data-variable="{{ link.id }}" data-csrf="{{ csrf_token }}"></div>
+<script src="{{ url_for('static', filename='js/link/detail_tag.js') }}"></script>
+{% endblock %}

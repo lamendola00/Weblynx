@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}All Links{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center mt-4">All Links</h1>
+
+    <!-- Filtraggio per tag -->
+    <div class="text-center mt-4">
+        <form action="{{ url_for('link.filter_by_tag') }}" method="get" class="form-inline justify-content-center">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="tag-filter" class="sr-only">Tags</label>
+                <select class="form-control" id="tag-filter" name="tag_id">
+                    <option value="">All Tags</option>
+                    {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Filter</button>
+            <a href="{{ url_for('link.show_all') }}" class="btn btn-secondary mb-2 ml-2">Reset</a>
+        </form>
+        <a href="{{ url_for('link.add_link') }}" class="btn btn-success mt-3">Add Link</a>
+        <a href="{{ url_for('link.delete_link') }}" class="btn btn-danger mt-3">Delete Link or Tag</a>
+    </div>
+
+    <!-- Tabella dei link -->
+    <div class="table-container mt-4">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>URL</th>
+                    <th>Description</th>
+                    <th>Tags</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in links %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
+                    <td>{{ item.description }}</td>
+                    <td>
+                        {% for tag in item.tags %}
+                        {{ tag.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('link.detail_link', link_id=item.id) }}">
+                            <img src="data:image/jpeg;base64,{{ item.image_resized }}" alt="Image" style="max-width: 100px;">
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

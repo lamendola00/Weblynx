@@ -1,0 +1,57 @@
+h1 {
+    border: 2px #eee solid;
+    color: #197278;
+    text-align: center;
+    padding: 10px;
+}
+.table-container {
+    margin: 50px auto;
+    width: 80%;
+    max-width: 800px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.centered-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Aggiunto margine sopra per separare dalla navbar */
+}
+
+.centered-buttons .btn {
+    margin: 0 10px; /* Aggiunto margine tra i pulsanti */
+}
+
+.image-container {
+    width: 300px; /* Imposta la larghezza del riquadro */
+    height: 300px; /* Imposta l'altezza del riquadro */
+    overflow: hidden; /* Nasconde le eventuali parti dell'immagine che non rientrano nel riquadro */
+    border: 1px solid #ccc; /* Aggiunge un bordo al riquadro */
+}
+
+.image {
+    max-width: 100%; /* Assicura che l'immagine non superi la larghezza del riquadro */
+    max-height: 100%; /* Assicura che l'immagine non superi l'altezza del riquadro */
+    display: block; /* Assicura che l'immagine si adatti correttamente al riquadro */
+}
+
+/* Stile personalizzato per l'icona dell'utente e il menu */
+.navbar .dropdown-menu-right {
+    right: 0;
+    left: auto;
+}
+
+.navbar .nav-link {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .nav-link .fas {
+    margin-right: 0.5rem;
+}

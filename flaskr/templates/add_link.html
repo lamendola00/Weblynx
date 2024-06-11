@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Add Link{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Add Link</h1>
+    <form id="add-link-form" action="{{ url_for('link.add_link') }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input type="text" class="form-control" id="url" name="url" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="description" required>
+        </div>
+        <div class="form-group">
+            <label for="tags">Tags:</label>
+            <div class="input-group">
+                <select class="form-control" id="tags" name="tag_ids">
+                    <option value="" disabled selected>Select a tag</option>
+                    {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                    {% endfor %}
+                    <option value="new">New Tag</option>
+                </select>
+                <button type="button" class="btn btn-primary ml-2" id="add_selected_tag">Add Selected Tag</button>
+            </div>
+        </div>
+        <div class="form-group" id="new_tag_group" style="display: none;">
+            <label for="new_tag">New Tag</label>
+            <input type="text" class="form-control" id="new_tag">
+            <button type="button" class="btn btn-primary mt-2" id="add_new_tag">Add Tag</button>
+        </div>
+        <div class="form-group">
+            <label for="added_tags">Added Tags</label>
+            <div id="added_tags" class="mb-2"></div>
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" class="form-control-file" id="image" name="image" accept="image/jpeg, image/png">
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{{ url_for('link.show_all') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/link/add_link.js') }}"></script>
+{% endblock %}
